@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+</head>
+<body>
+
+{% if user.is_authenticated %}
+<h3><a href="{% url 'logout' %}">Выйти</a></h3>
+<h3><a href="{% url 'profile' %}">Профиль</a></h3>
+{% else %}
+<h3><a href="{% url 'register' %}">Зарегистрироваться</a></h3>
+<h3><a href="{% url 'login' %}">Войти</a></h3>
+{% endif %}
+
+<h5 align="center"><a href="/categories">Категории</a></h5>
+
+{% for item in product %}
+
+<h3>{{ item.title }} / {{ item.slug }} / {{ item.price }} рублей</h3>
+<br>
+<div style="margin-left: 40px">
+    {% for item_photo in item.photos.all %}
+
+        <img src="{{ item_photo.product_photo.url }}" width="200px" height="70px">
+    {% endfor %}
+
+
+    <h5>{{ item.subcategory }}  ({{ item.subcategory.category }})</h5>
+
+
+
+        <form action="{% url 'add_basket' title=item.title  %}" method="get" enctype="multipart/form-data">
+            {% csrf_token %}
+            <small>Чтобы добавить товар в корзину введите желаемое колличество товаров и нажмите кнопку "Добавить"</small><br>
+
+            <input name="count" type="search" placeholder="Количество товаров" aria-label="Search" required="">
+            <button type="submit">Добавить</button>
+        </form>
+</div>
+
+<br><br>
+{% endfor %}
+</body>
+</html>

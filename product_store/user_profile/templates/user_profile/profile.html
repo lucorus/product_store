@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль {{ request.user }}</title>
+</head>
+<body>
+<h1>{{ request.user }}</h1>
+<a href="clear_basket">Очистить корзину</a>
+
+<div style="margin-left: 30px;">
+
+     <code style="color: red;">{{ price }}</code> <br>
+
+{% for item in basket.products.all %}
+
+    <a href="clear_basket/{{ item.title }}">{{ item.title }}</a>
+    {{ item.count }}<a href="change_count/{{ item.title }}/-">-</a> / <a href="change_count/{{ item.title }}/+">+</a>
+    <br><br>
+
+{% endfor %}
+</div>
+
+</body>
+</html>
