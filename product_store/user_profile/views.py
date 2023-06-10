@@ -1,4 +1,5 @@
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.db.models import QuerySet, Q
 from django.shortcuts import render, redirect
 from products.models import Product
@@ -7,6 +8,7 @@ from .forms import *
 
 
 # выводим корзину юзера + сумму товаров
+@login_required
 def profile(request):
     try:
         basket = Basket.objects.get(owner__slug=request.user.slug)
@@ -25,6 +27,7 @@ def profile(request):
 
 
 #очищает корзину юзера. если есть доп параметр (название продукта), то убирает только его, иначе всё
+@login_required()
 def clear_basket(request, title=None):
     if title == None:
         basket = Basket.objects.get(owner__slug=request.user.slug)
@@ -39,6 +42,7 @@ def clear_basket(request, title=None):
 
 
 # уменьшаем/увеличиваем колличество предетов в корзине в зависимости от mark (+/-)
+@login_required
 def change_count(request, title, mark):
     basket = Basket.objects.get(owner__slug=request.user.slug)
     product = ProductInBasket.objects.get(basket=basket, title=title)
@@ -56,6 +60,7 @@ def change_count(request, title, mark):
 
 # добавляет промежуточный объект между настоящим и корзиной
 # добавляет в корзину промежуточный предмет с названием title, количеством count и ценой price
+@login_required
 def add_basket(request, title):
     # если ввели в input количества не число, то количество = 1
     try:
@@ -95,6 +100,7 @@ def user_register(request):
     return render(request, 'authorization/authorization.html', {'form': form})
 
 
+@login_required
 def user_logout(request):
     logout(request)
     return redirect('main_page')

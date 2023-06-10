@@ -1,6 +1,7 @@
 from django.db import models
 
 
+# список фотографий, добавляемых к продукту (на случай если в будущем придётся изменить количество фото продукта)
 class ProductPhoto(models.Model):
     product_photo = models.ImageField(upload_to='photos')
 
@@ -16,8 +17,8 @@ class Product(models.Model):
     title = models.CharField(max_length=256, unique=True, verbose_name='Название')
     slug = models.SlugField()
     price = models.PositiveIntegerField(verbose_name='Цена')
-    photos = models.ManyToManyField(ProductPhoto, related_name='product')
-    subcategory = models.ForeignKey('SubCategory', on_delete=models.PROTECT, related_name='product')
+    photos = models.ManyToManyField(ProductPhoto, related_name='product', verbose_name='Фотографии')
+    subcategory = models.ForeignKey('SubCategory', on_delete=models.PROTECT, related_name='product', verbose_name='Подкатегория')
 
     def __str__(self):
         return self.title
@@ -44,7 +45,7 @@ class SubCategory(models.Model):
     title = models.CharField(max_length=64, verbose_name='Название')
     slug = models.SlugField(unique=True)
     image = models.ImageField(upload_to='photos', verbose_name='Изображение')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subcategories')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subcategories', verbose_name='Категория')
 
     def __str__(self):
         return self.title

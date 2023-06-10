@@ -15,9 +15,3 @@ def categories(request):
     page_object = category.get_page(page_number)
     return render(request, 'products/categories.html', {'category': page_object})
 
-
-def print_data(reqeust, slug):
-    data = reqeust.GET.get('count')
-    print(data, '\n', slug)
-    return redirect('main_page')
-

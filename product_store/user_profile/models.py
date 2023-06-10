@@ -25,10 +25,6 @@ class ProductInBasket(models.Model):
     count = models.PositiveIntegerField(default=0, verbose_name='Количество')
     price = models.PositiveIntegerField(default=0, verbose_name='Цена')
 
-    def change_count(self):
-        self.count = int(self.count) - 1
-        return self.count
-
     def __str__(self):
         return self.title
 
@@ -38,8 +34,8 @@ class ProductInBasket(models.Model):
 
 
 class Basket(models.Model):
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='basket')
-    products = models.ManyToManyField(ProductInBasket, related_name='basket', blank=True)
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='basket', verbose_name='Владелец корзины')
+    products = models.ManyToManyField(ProductInBasket, related_name='basket', blank=True, verbose_name='Продукты в корзине')
 
     def __str__(self):
         return self.owner.username
